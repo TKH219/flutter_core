@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:progress_hud/progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sw_core_package/bases/CoreScreenWidget.dart';
@@ -31,28 +32,28 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
   }
 
   bool haveInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    haveInitialized = false;
-    _initProgressHUB();
-  }
+  var isLargeScreen = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    initComponents(context);
+  }
+
+  void initComponents(BuildContext context) {
     // any related to context should be init here
     if (!haveInitialized) {
-      initLocale(context);
+      initProgressHUB();
+      initOrientationMode(context);
       initWithContext(context);
+      registerRxBus();
       haveInitialized = true;
     }
   }
 
-  void initLocale(BuildContext context);
+  void initWithContext(BuildContext context);
 
-  void _initProgressHUB() {
+  void initProgressHUB() {
     _progressHUD = ProgressHUD(
       backgroundColor: CoreColors.loadingBackgroundColor,
       color: CoreColors.loadingColor,
@@ -60,6 +61,14 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
       borderRadius: 5.0,
       loading: false,
     );
+  }
+
+  void initOrientationMode(BuildContext context) {
+    if (Device.get().isTablet) {
+      isLargeScreen = true;
+    } else {
+      isLargeScreen = false;
+    }
   }
 
   void showProgressHUD(bool shouldShow) {
@@ -73,16 +82,15 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     });
   }
 
-  void initWithContext(BuildContext context) {
-    registerBus();
-  }
-
-  void registerBus() {
+  void registerRxBus() {
     RxBus.register<ShowProgressHUB>(tag: this.bloc.busTag).listen((message) {
       showProgressHUD(message.shouldShow);
     });
     RxBus.register<ShowToastMessage>(tag: this.bloc.busTag).listen((message) {
       showToastMessage(message.toastText);
+    });
+    RxBus.register<ShowSnackMessage>(tag: this.bloc.busTag).listen((message) {
+      showSnackMessage(message.message);
     });
   }
 
@@ -95,20 +103,21 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     Future.delayed(Duration(milliseconds: 300), () {
       stateIsReady(context);
     });
-    return Scaffold(
+    Widget scafford = Scaffold(
         appBar: createAppBarContent(context),
         key: scaffoldToastKey,
-        body: Stack(
-          children: <Widget>[
-            createBodyContent(context),
-            _progressHUD,
-          ],
-        ),
-        resizeToAvoidBottomPadding: true);
+        body: SafeArea(
+            bottom: false,
+            child: Ink(
+                child: isLargeScreen
+                    ? buildTabletLayout(context)
+                    : buildMobileLayout(context),
+                color: CoreColors.screenBackgroundColor)),
+        resizeToAvoidBottomInset: false);
+    return Stack(
+        children: <Widget>[scafford, _progressHUD],
+        alignment: Alignment.center);
   }
-
-  @protected
-  Widget createBodyContent(BuildContext context);
 
   @protected
   Widget createAppBarContent(BuildContext context) {
@@ -116,13 +125,21 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
   }
 
   @protected
+  Widget buildMobileLayout(BuildContext context);
+
+  Widget buildTabletLayout(BuildContext context) {
+    return buildMobileLayout(context);
+  }
+
+  @protected
   void stateIsReady(BuildContext context) {}
 
-  void showToastMessage(String message) {
+  void showToastMessage(String message,
+      [ToastGravity gravity = ToastGravity.CENTER]) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
+        gravity: gravity,
         timeInSecForIos: 1,
         backgroundColor: CoreColors.toastBackgroundColor,
         textColor: CoreColors.toastTextColor,

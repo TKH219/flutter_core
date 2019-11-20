@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CoreColors {
-
   static const Color Black_4a = const Color(0xFF4a4a4a); //#4a4a4a,
   static const Color Black_12_a = Colors.black45;
   static const Color White = const Color(0xFFFFFFFF);
@@ -28,6 +27,7 @@ class CoreColors {
 
   // //// app bar
   static Color appBarBackgroundColor = White;
+  static Color screenBackgroundColor = White;
 
   // //// buttons
   // enable

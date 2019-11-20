@@ -1,21 +1,25 @@
-
 class ShowProgressHUB {
-
   bool shouldShow;
 
   ShowProgressHUB(this.shouldShow);
-
 }
 
 class ShowToastMessage {
-
   String toastText;
 
-
   ShowToastMessage(this.toastText);
-
 }
 
-class UserProfileUpdated {
+class ShowSnackMessage {
+  String message;
+  ShowSnackMessage(this.message);
+}
 
+class ShowCodeError {
+  int errorCode;
+  ShowCodeError({this.errorCode});
+}
+
+class RxBusTag {
+  static const RxBusTag_TOKEN_INVALID = "RxBusTag_TOKEN_INVALID";
 }

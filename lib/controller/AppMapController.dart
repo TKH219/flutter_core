@@ -5,13 +5,13 @@ import 'package:logging/logging.dart';
 import 'package:sw_core_package/utilities/map/SphericalUtil.dart';
 
 class AppMapController {
-  AppMapController(this._mapController);
+  AppMapController(this.mapController);
 
   final Logger _logger = new Logger("AppMapController");
 
   final double defaultBoundsPadding = 40.0;
 
-  GoogleMapController _mapController;
+  GoogleMapController mapController;
 
   CameraPosition _lastPosition;
 
@@ -35,7 +35,7 @@ class AppMapController {
       zoom = this._currentZoom;
     }
     if (Platform.isAndroid) {
-      _mapController.animateCamera(CameraUpdate.newLatLngZoom(latLng, zoom));
+      mapController.animateCamera(CameraUpdate.newLatLngZoom(latLng, zoom));
     } else {
       await _handleIOSZoom(latLng, zoom, zoomFromTop: zoomFromTop);
     }
@@ -44,7 +44,7 @@ class AppMapController {
   Future<void> animateCameraToBound(LatLngBounds latLngBounds,
       {bool zoomFromTop = true}) async {
     if (Platform.isAndroid) {
-      _mapController.animateCamera(
+      mapController.animateCamera(
           CameraUpdate.newLatLngBounds(latLngBounds, defaultBoundsPadding));
     } else {
       await _handleIOSBoundZoom(latLngBounds, zoomFromTop: zoomFromTop);
@@ -75,17 +75,17 @@ class AppMapController {
     }
     // zoom down to destination
     for (; _toZoom < destinationZoom; _toZoom += _zoomStep) {
-      _mapController.animateCamera(CameraUpdate.newLatLngZoom(latLng, _toZoom));
+      mapController.animateCamera(CameraUpdate.newLatLngZoom(latLng, _toZoom));
       await Future.delayed(Duration(milliseconds: 150));
       // handle LatLngBound case
       if (boundDiameter > 0.0) {
-        final region = await _mapController.getVisibleRegion();
+        final region = await mapController.getVisibleRegion();
         final distance = SphericalUtil.computeDistanceBetween(
             bounds.southwest, region.southwest);
         if (distance < boundDiameter) {
           _zoomStep = 0.25;
           if (distance < boundDiameter / 2) {
-            await _mapController.animateCamera(
+            await mapController.animateCamera(
                 CameraUpdate.newLatLngBounds(bounds, defaultBoundsPadding));
             bounds = null;
             break;
