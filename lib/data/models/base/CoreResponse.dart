@@ -4,8 +4,6 @@ part 'CoreResponse.g.dart';
 
 @JsonSerializable()
 class CoreResponse extends Object {
-  String name;
-  String created;
   String message;
   String errorMessage;
   @JsonKey(ignore: true)
@@ -13,8 +11,7 @@ class CoreResponse extends Object {
 
   //
   CoreResponse(
-      {this.name = "",
-      this.created = "",
+      {
       this.message = "",
       this.errorMessage = ""});
 

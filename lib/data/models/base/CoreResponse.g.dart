@@ -8,16 +8,12 @@ part of 'CoreResponse.dart';
 
 CoreResponse _$BaseResponseFromJson(Map<String, dynamic> json) {
   return CoreResponse(
-      name: json['name'] as String,
-      created: json['created'] as String,
       message: json['message'] as String,
       errorMessage: json['errorMessage'] as String);
 }
 
 Map<String, dynamic> _$BaseResponseToJson(CoreResponse instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'created': instance.created,
       'message': instance.message,
       'errorMessage': instance.errorMessage
     };
