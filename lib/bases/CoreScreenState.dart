@@ -114,9 +114,9 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
                     : buildMobileLayout(context),
                 color: CoreColors.screenBackgroundColor)),
         resizeToAvoidBottomInset: false);
-    return Stack(
+    return Material(child: Stack(
         children: <Widget>[scafford, _progressHUD],
-        alignment: Alignment.center);
+        alignment: Alignment.center));
   }
 
   @protected
