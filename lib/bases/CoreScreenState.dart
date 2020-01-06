@@ -106,6 +106,7 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
 
     return MaterialApp(
         home: Scaffold(
+          appBar: createAppBarContent(context),
             body: SafeArea(
                 child: Stack(
                     children: <Widget>[isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context), _progressHUD],
