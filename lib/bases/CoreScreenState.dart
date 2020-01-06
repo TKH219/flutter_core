@@ -103,18 +103,18 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     Future.delayed(Duration(milliseconds: 300), () {
       stateIsReady(context);
     });
-
-    return MaterialApp(
+    Widget scaffold = MaterialApp(
         home: Scaffold(
-          appBar: createAppBarContent(context),
+            appBar: createAppBarContent(context),
             body: SafeArea(
-                child: Stack(
-                    children: <Widget>[isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context), _progressHUD],
-                    alignment: Alignment.center)
+                child:isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context)
             ),
             resizeToAvoidBottomInset: false
-        )
-    );
+        ));
+
+                return Stack(
+                    children: <Widget>[scaffold, _progressHUD],
+                    alignment: Alignment.center);
   }
 
   @protected
