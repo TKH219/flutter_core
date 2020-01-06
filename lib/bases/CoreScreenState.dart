@@ -108,11 +108,10 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
         key: scaffoldToastKey,
         body: SafeArea(
             bottom: false,
-            child: Ink(
-                child: isLargeScreen
+            child: isLargeScreen
                     ? buildTabletLayout(context)
                     : buildMobileLayout(context),
-                color: CoreColors.screenBackgroundColor)),
+        ),
         resizeToAvoidBottomInset: false);
     return Material(child: Stack(
         children: <Widget>[scafford, _progressHUD],
