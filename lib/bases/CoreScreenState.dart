@@ -103,13 +103,16 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     Future.delayed(Duration(milliseconds: 300), () {
       stateIsReady(context);
     });
-    Widget scaffold = MaterialApp(
-        home: Scaffold(
+    Widget scaffold = Material(
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: createAppBarContent(context),
             body: SafeArea(
+                bottom: false,
                 child:isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context)
             ),
-            resizeToAvoidBottomInset: false
+
+          bottomNavigationBar: bottomNavigationBar(context),
         ));
 
                 return Stack(
@@ -119,6 +122,10 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
 
   @protected
   Widget createAppBarContent(BuildContext context) {
+    return null;
+  }
+  @protected
+  Widget bottomNavigationBar(BuildContext context){
     return null;
   }
 
