@@ -109,7 +109,12 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
             appBar: createAppBarContent(context),
             body: SafeArea(
                 bottom: false,
-                child:isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context)
+                child:GestureDetector(
+                  onTap: (){
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                  },
+                  child: isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context),
+                )
             ),
 
           bottomNavigationBar: bottomNavigationBar(context),
