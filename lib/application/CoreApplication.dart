@@ -25,6 +25,7 @@ abstract class CoreApplication extends StatelessWidget {
       localizationsDelegates: initLocalizationsDelegate(),
       supportedLocales: initSupportLocales(),
       locale: defaultLocale(),
+      themeMode: themeMode(),
     );
     return materialApp;
   }
@@ -32,7 +33,9 @@ abstract class CoreApplication extends StatelessWidget {
   Route _getRoute(RouteSettings settings) {
     return CoreRouter.router.generator(settings);
   }
-
+  ThemeMode themeMode(){
+    return ThemeMode.system;
+  }
   Locale defaultLocale() {
     return Locale('en');
   }
