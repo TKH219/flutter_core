@@ -33,6 +33,7 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
 
   bool haveInitialized = false;
   var isLargeScreen = false;
+  var isSafeArea = true;
 
   @override
   void didChangeDependencies() {
@@ -103,19 +104,21 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     Future.delayed(Duration(milliseconds: 300), () {
       stateIsReady(context);
     });
+
+    Widget mainContent = GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context),
+    );
     Widget scaffold = Material(
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: createAppBarContent(context),
-            body: SafeArea(
+            body: isSafeArea?SafeArea(
                 bottom: false,
-                child:GestureDetector(
-                  onTap: (){
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  },
-                  child: isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context),
-                )
-            ),
+                child:mainContent
+            ): mainContent,
 
           bottomNavigationBar: bottomNavigationBar(context),
         ));
