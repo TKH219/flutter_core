@@ -92,15 +92,20 @@ abstract class CoreRequestBuilder {
       // that falls out of the range of 2xx and is also not 304.
       String errorMessage;
       int errorCode = 0;
-      if (error.response != null) {
-        errorCode = error.response.statusCode;
-        if (error.response.data != null) {
-          errorMessage = retrieveErrorMessage(error.response.data);
+      try {
+        if (error.response != null) {
+          errorCode = error.response.statusCode;
+          if (error.response.data != null) {
+            errorMessage = retrieveErrorMessage(error.response.data);
+          }
+        } else {
+          errorMessage = error.message;
         }
-      } else {
-        errorMessage = error.message;
+        onError(CoreResponseError.fromValues(errorCode, errorMessage));
+      }catch(e){
+        onError(CoreResponseError.fromValues(0, ""));
       }
-      onError(CoreResponseError.fromValues(errorCode, errorMessage));
+
     }
   }
 
