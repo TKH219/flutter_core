@@ -25,4 +25,5 @@ class NoConnection{
 }
 class RxBusTag {
   static const RxBusTag_TOKEN_INVALID = "RxBusTag_TOKEN_INVALID";
+  static const RxBusTag_NO_CONNECTION = "RxBusTag_NO_CONNECTION";
 }
