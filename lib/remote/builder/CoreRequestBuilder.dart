@@ -63,7 +63,7 @@ abstract class CoreRequestBuilder {
     } on DioError catch (error) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
-      String errorMessage;
+      String errorMessage ="";
 
       int errorCode = 0;
       try {
@@ -79,8 +79,8 @@ abstract class CoreRequestBuilder {
           } else {
             errorMessage = error.message;
           }
-          onError(CoreResponseError.fromValues(errorCode, errorMessage));
         }
+        onError(CoreResponseError.fromValues(errorCode, errorMessage));
         return;
       }catch( error){
         onError(CoreResponseError.fromValues(errorCode, errorMessage));
