@@ -27,6 +27,9 @@ abstract class CoreBloc<CS extends CoreResponse> {
   void showToast(String toastMessage) {
     RxBus.post(ShowToastMessage(toastMessage), tag: busTag);
   }
+  void showSnackBar(String message){
+    RxBus.post(ShowSnackMessage(message), tag: busTag);
+  }
 
   dispose() {
     subject.close();

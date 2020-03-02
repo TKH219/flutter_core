@@ -36,6 +36,7 @@ abstract class CoreRequestBuilder {
       Function(Map<String, dynamic> responseData) onResponse,
       dynamic Function(CoreResponseError error) onError) async {
     try {
+
       setupInterceptors(endPoint, requestParams: requestParams);
       Response response;
       switch (httpMethod) {
@@ -63,19 +64,27 @@ abstract class CoreRequestBuilder {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       String errorMessage;
+
       int errorCode = 0;
       try {
-        if (error.response != null) {
-          errorCode = error.response.statusCode;
-          if (error.response.data != null) {
-            errorMessage = retrieveErrorMessage(error.response.data);
+        if (error.type == DioErrorType.DEFAULT ||
+            error.type == DioErrorType.CONNECT_TIMEOUT) {
+          RxBus.post(ShowSnackMessage(""), tag: this.runtimeType.toString());
+        }else{
+          if (error.response != null) {
+            errorCode = error.response.statusCode;
+            if (error.response.data != null) {
+              errorMessage = retrieveErrorMessage(error.response.data);
+            }
+          } else {
+            errorMessage = error.message;
           }
-        } else {
-          errorMessage = error.message;
+          onError(CoreResponseError.fromValues(errorCode, errorMessage));
         }
+        return;
+      }catch( error){
         onError(CoreResponseError.fromValues(errorCode, errorMessage));
-      } catch (e) {
-        onError(CoreResponseError.fromValues(0, ""));
+        return;
       }
     }
   }

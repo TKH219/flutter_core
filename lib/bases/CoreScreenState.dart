@@ -114,6 +114,7 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     Widget scaffold = Material(
         child: Scaffold(
             resizeToAvoidBottomInset: false,
+            key: scaffoldToastKey,
             appBar: createAppBarContent(context),
             body: isSafeArea?SafeArea(
                 bottom: false,
@@ -121,7 +122,8 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
             ): mainContent,
 
           bottomNavigationBar: bottomNavigationBar(context),
-        ));
+        )
+    );
 
                 return Stack(
                     children: <Widget>[scaffold, _progressHUD],
@@ -161,12 +163,16 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
 
   void showSnackMessage(String message) {
     Future.delayed(Duration.zero, () {
-      scaffoldToastKey.currentState.showSnackBar(new SnackBar(
-        content: new Container(
-            child: new Text(message, textAlign: TextAlign.center)),
-        duration: new Duration(seconds: 3),
-      ));
+      scaffoldToastKey.currentState.showSnackBar(snackBar(message));
     });
+  }
+
+  Widget snackBar(String message){
+    return new SnackBar(
+      content: new Container(
+          child: new Text(message, textAlign: TextAlign.center)),
+      duration: new Duration(seconds: 3),
+    );
   }
 
   void requestFocusNode(FocusNode focusedNode) {
