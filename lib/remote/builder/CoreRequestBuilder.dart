@@ -69,7 +69,7 @@ abstract class CoreRequestBuilder {
       try {
         if (error.type == DioErrorType.DEFAULT ||
             error.type == DioErrorType.CONNECT_TIMEOUT) {
-          RxBus.post(ShowSnackMessage(""), tag: this.runtimeType.toString());
+          RxBus.post(NoConnection(true), tag: this.runtimeType.toString());
         }else{
           if (error.response != null) {
             errorCode = error.response.statusCode;

@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c24067c5-31bd-4c7c-9d71-53bd5e8c051b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/bases/CoreBloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/bases/CoreBloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/bases/CoreScreenState.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/bases/CoreScreenState.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/remote/builder/CoreRequestBuilder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/remote/builder/CoreRequestBuilder.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utilities/rxbus/CoreBusMessages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utilities/rxbus/CoreBusMessages.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/lib/bases/CoreScreenState.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="327">
-              <caret line="163" column="41" lean-forward="true" selection-start-line="163" selection-start-column="41" selection-end-line="163" selection-end-column="41" />
+              <caret line="163" column="41" selection-start-line="163" selection-start-column="41" selection-end-line="163" selection-end-column="41" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -55,16 +53,16 @@
         <entry file="file://$PROJECT_DIR$/lib/bases/CoreBloc.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="38" lean-forward="true" selection-start-column="38" selection-end-column="38" />
+              <caret column="38" selection-start-column="38" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/remote/builder/CoreRequestBuilder.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="84" column="21" lean-forward="true" selection-start-line="84" selection-start-column="21" selection-end-line="84" selection-end-column="21" />
+            <state relative-caret-position="129">
+              <caret line="71" column="75" lean-forward="true" selection-start-line="71" selection-start-column="75" selection-end-line="71" selection-end-column="75" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -72,27 +70,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/utilities/rxbus/CoreBusMessages.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="19" lean-forward="true" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+            <state relative-caret-position="315">
+              <caret line="21" column="18" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="18" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/dio-2.2.2/lib/src/dio_error.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="17" column="6" lean-forward="true" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pubspec.lock">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -138,6 +122,7 @@
         <option value="$PROJECT_DIR$/lib/application/CoreApplication.dart" />
         <option value="$PROJECT_DIR$/lib/bases/CoreScreenState.dart" />
         <option value="$PROJECT_DIR$/lib/bases/CoreBloc.dart" />
+        <option value="$PROJECT_DIR$/lib/utilities/rxbus/CoreBusMessages.dart" />
         <option value="$PROJECT_DIR$/lib/remote/builder/CoreRequestBuilder.dart" />
       </list>
     </option>
@@ -229,8 +214,8 @@
       <window_info anchor="bottom" id="Run" order="1" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="4" visible="true" weight="0.042372882" />
-      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="4" sideWeight="0.49928468" visible="true" weight="0.15677966" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5007153" side_tool="true" weight="0.15677966" />
       <window_info anchor="bottom" id="Flutter Performance" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Messages" order="8" visible="true" weight="0.15595075" />
@@ -576,10 +561,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/lib/utilities/rxbus/CoreBusMessages.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="18" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/bases/CoreScreenState.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="327">
-          <caret line="163" column="41" lean-forward="true" selection-start-line="163" selection-start-column="41" selection-end-line="163" selection-end-column="41" />
+          <caret line="163" column="41" selection-start-line="163" selection-start-column="41" selection-end-line="163" selection-end-column="41" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -589,24 +581,17 @@
     <entry file="file://$PROJECT_DIR$/lib/bases/CoreBloc.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="38" lean-forward="true" selection-start-column="38" selection-end-column="38" />
+          <caret column="38" selection-start-column="38" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/remote/builder/CoreRequestBuilder.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="84" column="21" lean-forward="true" selection-start-line="84" selection-start-column="21" selection-end-line="84" selection-end-column="21" />
+        <state relative-caret-position="129">
+          <caret line="71" column="75" lean-forward="true" selection-start-line="71" selection-start-column="75" selection-end-line="71" selection-end-column="75" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/utilities/rxbus/CoreBusMessages.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="19" lean-forward="true" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
         </state>
       </provider>
     </entry>
