@@ -162,7 +162,7 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
   }
 
   void showSnackMessage(String message) {
-    Future.delayed(Duration.zero, () {
+   Future.delayed(Duration.zero, () {
       scaffoldToastKey.currentState.showSnackBar(snackBar(message));
     });
   }

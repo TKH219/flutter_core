@@ -35,7 +35,7 @@ abstract class CoreApplication extends StatelessWidget {
     return match.route;
   }
   ThemeMode themeMode() {
-    return ThemeMode.system;
+    return ThemeMode.light;
   }
   Locale defaultLocale() {
     return Locale('en');

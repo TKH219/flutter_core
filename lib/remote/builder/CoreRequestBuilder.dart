@@ -68,8 +68,10 @@ abstract class CoreRequestBuilder {
       int errorCode = 0;
       try {
         if (error.type == DioErrorType.DEFAULT ||
-            error.type == DioErrorType.CONNECT_TIMEOUT) {
-          RxBus.post(NoConnection(true), tag: RxBusTag.RxBusTag_NO_CONNECTION);
+            error.type == DioErrorType.CONNECT_TIMEOUT ||
+            error.type == DioErrorType.RECEIVE_TIMEOUT||
+            error.type == DioErrorType.SEND_TIMEOUT) {
+          errorCode = 1001; // No connection
         }else{
           if (error.response != null) {
             errorCode = error.response.statusCode;
