@@ -6,7 +6,7 @@ import 'package:sw_core_package/routes/CoreRoutes.dart';
 import 'package:fluro/fluro.dart';
 abstract class CoreApplication extends StatelessWidget {
   CoreApplication({Key key}) : super(key: key) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     _configureLogger();
     initResources();
   }
