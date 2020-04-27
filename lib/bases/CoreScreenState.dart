@@ -112,7 +112,8 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
       child: isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context),
     );
     Widget scaffold = Material(
-        child: Scaffold(
+        child:   MediaQuery(
+          child: Scaffold(
             resizeToAvoidBottomInset: false,
             key: scaffoldToastKey,
             appBar: createAppBarContent(context),
@@ -121,7 +122,9 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
                 child:mainContent
             ): mainContent,
 
-          bottomNavigationBar: bottomNavigationBar(context),
+            bottomNavigationBar: bottomNavigationBar(context),
+          ),
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         )
     );
 
