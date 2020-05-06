@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:progress_hud/progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sw_core_package/bases/CoreScreenWidget.dart';
@@ -31,28 +32,29 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
   }
 
   bool haveInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    haveInitialized = false;
-    _initProgressHUB();
-  }
+  var isLargeScreen = false;
+  var isSafeArea = true;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    initComponents(context);
+  }
+
+  void initComponents(BuildContext context) {
     // any related to context should be init here
     if (!haveInitialized) {
-      initLocale(context);
+      initProgressHUB();
+      initOrientationMode(context);
       initWithContext(context);
+      registerRxBus();
       haveInitialized = true;
     }
   }
 
-  void initLocale(BuildContext context);
+  void initWithContext(BuildContext context);
 
-  void _initProgressHUB() {
+  void initProgressHUB() {
     _progressHUD = ProgressHUD(
       backgroundColor: CoreColors.loadingBackgroundColor,
       color: CoreColors.loadingColor,
@@ -60,6 +62,14 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
       borderRadius: 5.0,
       loading: false,
     );
+  }
+
+  void initOrientationMode(BuildContext context) {
+    if (Device.get().isTablet) {
+      isLargeScreen = true;
+    } else {
+      isLargeScreen = false;
+    }
   }
 
   void showProgressHUD(bool shouldShow) {
@@ -73,16 +83,15 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     });
   }
 
-  void initWithContext(BuildContext context) {
-    registerBus();
-  }
-
-  void registerBus() {
+  void registerRxBus() {
     RxBus.register<ShowProgressHUB>(tag: this.bloc.busTag).listen((message) {
       showProgressHUD(message.shouldShow);
     });
     RxBus.register<ShowToastMessage>(tag: this.bloc.busTag).listen((message) {
       showToastMessage(message.toastText);
+    });
+    RxBus.register<ShowSnackMessage>(tag: this.bloc.busTag).listen((message) {
+      showSnackMessage(message.message);
     });
   }
 
@@ -95,34 +104,60 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
     Future.delayed(Duration(milliseconds: 300), () {
       stateIsReady(context);
     });
-    return Scaffold(
-        appBar: createAppBarContent(context),
-        key: scaffoldToastKey,
-        body: Stack(
-          children: <Widget>[
-            createBodyContent(context),
-            _progressHUD,
-          ],
-        ),
-        resizeToAvoidBottomPadding: true);
-  }
 
-  @protected
-  Widget createBodyContent(BuildContext context);
+    Widget mainContent = GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: isLargeScreen ? buildTabletLayout(context) : buildMobileLayout(context),
+    );
+    Widget scaffold = Material(
+        child:   MediaQuery(
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            key: scaffoldToastKey,
+            appBar: createAppBarContent(context),
+            body: isSafeArea?SafeArea(
+                bottom: false,
+                child:mainContent
+            ): mainContent,
+
+            bottomNavigationBar: bottomNavigationBar(context),
+          ),
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        )
+    );
+
+                return Stack(
+                    children: <Widget>[scaffold, _progressHUD],
+                    alignment: Alignment.center);
+  }
 
   @protected
   Widget createAppBarContent(BuildContext context) {
     return null;
   }
+  @protected
+  Widget bottomNavigationBar(BuildContext context){
+    return null;
+  }
+
+  @protected
+  Widget buildMobileLayout(BuildContext context);
+
+  Widget buildTabletLayout(BuildContext context) {
+    return buildMobileLayout(context);
+  }
 
   @protected
   void stateIsReady(BuildContext context) {}
 
-  void showToastMessage(String message) {
+  void showToastMessage(String message,
+      [ToastGravity gravity = ToastGravity.CENTER]) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
+        gravity: gravity,
         timeInSecForIos: 1,
         backgroundColor: CoreColors.toastBackgroundColor,
         textColor: CoreColors.toastTextColor,
@@ -130,13 +165,17 @@ abstract class CoreScreenState<RS extends CoreResponse, CB extends CoreBloc<RS>,
   }
 
   void showSnackMessage(String message) {
-    Future.delayed(Duration.zero, () {
-      scaffoldToastKey.currentState.showSnackBar(new SnackBar(
-        content: new Container(
-            child: new Text(message, textAlign: TextAlign.center)),
-        duration: new Duration(seconds: 3),
-      ));
+   Future.delayed(Duration.zero, () {
+      scaffoldToastKey.currentState.showSnackBar(snackBar(message));
     });
+  }
+
+  Widget snackBar(String message){
+    return new SnackBar(
+      content: new Container(
+          child: new Text(message, textAlign: TextAlign.center)),
+      duration: new Duration(seconds: 3),
+    );
   }
 
   void requestFocusNode(FocusNode focusedNode) {

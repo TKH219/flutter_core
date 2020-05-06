@@ -1,23 +1,42 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
+import 'package:sw_core_package/data/models/base/CoreResponse.dart';
+//import 'package:logging/logging.dart';
 import 'package:sw_core_package/data/models/error/CoreResponseError.dart';
 import 'package:sw_core_package/remote/constants/RemoteConstants.dart';
 import 'package:sw_core_package/utilities/CoreStorageManager.dart';
 import 'package:sw_core_package/utilities/CoreStringUtils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:logger/logger.dart';
+import 'package:sw_core_package/utilities/rxbus/CoreBusMessages.dart';
+import 'package:sw_core_package/utilities/rxbus/rxbus.dart';
+
+class SimpleLogPrinter extends LogPrinter {
+  final String className;
+  SimpleLogPrinter(this.className);
+
+  @override
+  void log(Level level, message, error, StackTrace stackTrace) {
+    var emoji = PrettyPrinter.levelEmojis[level];
+    println(('$emoji $className - $message'));
+  }
+}
+
 abstract class CoreRequestBuilder {
   Dio _dio;
-  final Logger _logger = new Logger("RequestBuilder");
+//  final Logger _logger = new Logger("RequestBuilder");
+  final Logger logger = Logger(printer: SimpleLogPrinter('RequestBuilder'));
 
-  Future<void> performRequest(String endPoint,
+  Future<void> performRequest(
+      String endPoint,
       String httpMethod,
       Map<String, dynamic> requestParams,
       Function(Map<String, dynamic> responseData) onResponse,
       dynamic Function(CoreResponseError error) onError) async {
     try {
+
       setupInterceptors(endPoint, requestParams: requestParams);
       Response response;
       switch (httpMethod) {
@@ -44,21 +63,36 @@ abstract class CoreRequestBuilder {
     } on DioError catch (error) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
-      String errorMessage;
+      String errorMessage ="";
+
       int errorCode = 0;
-      if (error.response != null) {
-        errorCode = error.response.statusCode;
-        if (error.response.data != null) {
-          errorMessage = retrieveErrorMessage(error.response.data);
+      try {
+        if (error.type == DioErrorType.DEFAULT ||
+            error.type == DioErrorType.CONNECT_TIMEOUT ||
+            error.type == DioErrorType.RECEIVE_TIMEOUT||
+            error.type == DioErrorType.SEND_TIMEOUT) {
+          errorCode = 1001; // No connection
+        }else{
+          if (error.response != null) {
+            errorCode = error.response.statusCode;
+            if (error.response.data != null) {
+              errorMessage = retrieveErrorMessage(error.response.data);
+            }
+          } else {
+            errorMessage = error.message;
+          }
         }
-      } else {
-        errorMessage = error.message;
+        onError(CoreResponseError.fromValues(errorCode, errorMessage));
+        return;
+      }catch( error){
+        onError(CoreResponseError.fromValues(errorCode, errorMessage));
+        return;
       }
-      onError(CoreResponseError.fromValues(errorCode, errorMessage));
     }
   }
 
-  Future<void> uploadImage(String endPoint,
+  Future<void> uploadImage(
+      String endPoint,
       FormData formData,
       Function(Map<String, dynamic> responseData) onResponse,
       dynamic Function(CoreResponseError error) onError) async {
@@ -73,15 +107,22 @@ abstract class CoreRequestBuilder {
       // that falls out of the range of 2xx and is also not 304.
       String errorMessage;
       int errorCode = 0;
-      if (error.response != null) {
-        errorCode = error.response.statusCode;
-        if (error.response.data != null) {
-          errorMessage = retrieveErrorMessage(error.response.data);
+     try{
+
+        if (error.response != null) {
+          errorCode = error.response.statusCode;
+          if (error.response.data != null) {
+            errorMessage = retrieveErrorMessage(error.response.data);
+          }
+        } else {
+          errorMessage = error.message;
         }
-      } else {
-        errorMessage = error.message;
-      }
-      onError(CoreResponseError.fromValues(errorCode, errorMessage));
+
+        onError(CoreResponseError.fromValues(errorCode, errorMessage));
+     }catch(e){
+       onError(CoreResponseError.fromValues(0, ""));
+     }
+
     }
   }
 
@@ -93,77 +134,81 @@ abstract class CoreRequestBuilder {
     var token = prefs.get(CoreStorageManager.userTokenKey);
     if (CoreStringUtils.isNotEmpty(token)) {
       headers["x-access-token"] = token;
-      _logger.fine("x-access-token: $token");
+      logger.d("x-access-token: $token");
     }
     return headers;
   }
 
   BaseOptions buildRequestOptions() {
     return BaseOptions(
-        baseUrl: CoreRemoteConstants.baseUrl,
-        contentType: ContentType.parse("application/x-www-form-urlencoded"),
-        responseType: ResponseType.json,
-        connectTimeout: 20000,
-        receiveTimeout: 15000,
+      baseUrl: CoreRemoteConstants.baseUrl,
+      contentType: ContentType.parse("application/x-www-form-urlencoded"),
+      responseType: ResponseType.json,
+      connectTimeout: 30000,
+      receiveTimeout: 30000,
     );
   }
 
-  void setupInterceptors(String endPoint, {Map<String, dynamic> requestParams, FormData formData}) {
+  void setupInterceptors(String endPoint,
+      {Map<String, dynamic> requestParams, FormData formData}) {
     int maxCharactersPerLine = 300;
     _dio = new Dio(buildRequestOptions());
     // setup request
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (Options options) async {
       options.headers = await buildHeader();
-      _logger.fine("<-- \n\nStart Request");
+      logger.v("Start Request");
       if (requestParams != null) {
-        _logger.fine("requestParams: $requestParams");
+        logger.v("requestParams: $requestParams");
       }
       if (formData != null) {
-        _logger.fine("formData: $formData");
-
+        logger.v("formData: $formData");
       }
-      _logger.fine("path: ${CoreRemoteConstants.baseUrl}$endPoint");
-      _logger.fine("-->method: ${options.method.toString()},\nheader: ${options.headers}");
-      _logger.fine("Content type: ${options.contentType}");
+      logger.v("path: ${CoreRemoteConstants.baseUrl}$endPoint");
+      logger.v("method: ${options.method.toString()}\n");
+      logger.v("header: ${options.headers}");
+      logger.v("Content type: ${options.contentType}\n");
       return options;
     }));
     // setup response
     _dio.interceptors.add(InterceptorsWrapper(onResponse: (Response response) {
-      _logger.fine(
-          "<--Response: code - ${response.statusCode} for method - ${response
-              .request.method.toString()}, and path - ${response.request.baseUrl + response.request.path}");
+      logger.i(
+          "Response: code - ${response.statusCode} for method - ${response.request.method.toString()}, and path - ${response.request.baseUrl + response.request.path}");
       String responseAsString = response.data.toString();
       if (responseAsString.length > maxCharactersPerLine) {
         int iterations =
-        (responseAsString.length / maxCharactersPerLine).floor();
+            (responseAsString.length / maxCharactersPerLine).floor();
         for (int i = 0; i <= iterations; i++) {
           int endingIndex = i * maxCharactersPerLine + maxCharactersPerLine;
           if (endingIndex > responseAsString.length) {
             endingIndex = responseAsString.length;
           }
-          _logger.fine(responseAsString.substring(
+          logger.i(responseAsString.substring(
               i * maxCharactersPerLine, endingIndex));
         }
       } else {
-        _logger.fine("Ressponse data: ${response.data}");
+        logger.i("Ressponse data: ${response.data}");
       }
-      _logger.fine("<-- End Request");
+      logger.d("End Request\n\n");
     }));
     // setup onError
     _dio.interceptors.add(InterceptorsWrapper(onError: (DioError error) {
-      _logger.fine("<-- Request got error");
+      logger.e("Request got error");
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (error.response != null) {
-        _logger.fine(error.response.data);
-        _logger.fine(error.response.headers);
-        _logger.fine(error.response.request);
+        logger.e("${error.response}\n\n");
+        if (error.response.statusCode == CoreHttpCode.TOKEN_INVALID) {
+          RxBus.post(ShowCodeError(errorCode: CoreHttpCode.TOKEN_INVALID),
+              tag: RxBusTag
+                  .RxBusTag_TOKEN_INVALID); //RxBusTag.RxBusTag_TOKEN_INVALID
+        }
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        _logger.fine(error.request);
-        _logger.fine(error.message);
+        logger.e(error.request);
+        logger.e("${error.message}\n\n");
       }
+      logger.d("\n\n");
     }));
   }
 }
