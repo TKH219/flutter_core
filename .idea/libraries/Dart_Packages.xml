@@ -79,13 +79,6 @@
             </list>
           </value>
         </entry>
-        <entry key="cookie_jar">
-          <value>
-            <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cookie_jar-1.0.1/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="crypto">
           <value>
             <list>
@@ -110,7 +103,7 @@
         <entry key="dio">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/dio-2.2.2/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/dio-3.0.10/lib" />
             </list>
           </value>
         </entry>
@@ -188,6 +181,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/html-0.14.0+3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="http_parser">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/http_parser-3.1.4/lib" />
             </list>
           </value>
         </entry>
@@ -506,11 +506,10 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/checked_yaml-1.0.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/collection-1.14.12/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cookie_jar-1.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/csslib-0.16.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/dart_style-1.2.9/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/dio-2.2.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/dio-3.0.10/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/fluro-1.6.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_device_type-0.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.6/lib" />
@@ -519,6 +518,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/glob-1.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-0.5.24+1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/html-0.14.0+3/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/http_parser-3.1.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/image-2.1.12/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/intl-0.15.8/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/js-0.6.1+1/lib" />

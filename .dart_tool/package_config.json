@@ -68,12 +68,6 @@
       "languageVersion": "1.17"
     },
     {
-      "name": "cookie_jar",
-      "rootUri": "file:///Users/hatk/.pub-cache/hosted/pub.dartlang.org/cookie_jar-1.0.1",
-      "packageUri": "lib/",
-      "languageVersion": "1.20"
-    },
-    {
       "name": "crypto",
       "rootUri": "file:///Users/hatk/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.4",
       "packageUri": "lib/",
@@ -93,9 +87,9 @@
     },
     {
       "name": "dio",
-      "rootUri": "file:///Users/hatk/.pub-cache/hosted/pub.dartlang.org/dio-2.2.2",
+      "rootUri": "file:///Users/hatk/.pub-cache/hosted/pub.dartlang.org/dio-3.0.10",
       "packageUri": "lib/",
-      "languageVersion": "1.9"
+      "languageVersion": "2.4"
     },
     {
       "name": "fluro",
@@ -160,6 +154,12 @@
     {
       "name": "html",
       "rootUri": "file:///Users/hatk/.pub-cache/hosted/pub.dartlang.org/html-0.14.0+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///Users/hatk/.pub-cache/hosted/pub.dartlang.org/http_parser-3.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.3"
     },
@@ -428,7 +428,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-08-30T10:43:34.191393Z",
+  "generated": "2020-10-10T05:03:51.628486Z",
   "generator": "pub",
   "generatorVersion": "2.8.2"
 }
